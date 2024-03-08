@@ -1,9 +1,9 @@
 import os
 try:
-    f = open('slotar.csv', 'r', encoding='utf-8')
+    f = open('python/slotar.csv', 'r', encoding='utf-8')
     slavak = [sor.strip() for sor in f]
 except: 
-    f = open('slotar.csv', 'w', encoding='utf-8')
+    f = open('python/slotar.csv', 'w', encoding='utf-8')
     slavak = []
 f.close()
 
@@ -45,17 +45,19 @@ def hozzaadas():
             slavak.append(hozzaadando)   
 
 def kereses():
-    # print('ajefjae')
     val = input('Mire szeretne keresni? ')
-    kiirt_szo = 0
-    for i in slavak:
-        if val in i:
-            if kiirt_szo == 4 or i == slavak[-1]:
-                print(i)
-                kiirt_szo = 0
-            else:
-                print(i, end=', ')
-                kiirt_szo += 1
+    kiirt_szo_db = 1
+    szavak = [sor for sor in slavak if val in sor]
+    for i in szavak:
+        if kiirt_szo_db == 4 or i == szavak[-1]:
+            print(i)
+            kiirt_szo_db = 1
+            continue
+        else:
+            print(i, end=', ')
+            kiirt_szo_db += 1
+
+
     input('ENTER')
 
 if __name__ == '__main__':
