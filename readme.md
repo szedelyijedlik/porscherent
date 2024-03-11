@@ -7,5 +7,6 @@
 - Python
 - Ötletgazda
 ### Szédelyi Ábris
-- PHP, CSS
+- HTML, CSS
+- Images, videos
 - Python
