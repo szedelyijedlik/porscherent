@@ -1,4 +1,4 @@
-# Slotár projekt
+# Porsche renting project
 ### Pop Dávid Tibor
 - Python
 - HTML, CSS
