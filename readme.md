@@ -5,7 +5,6 @@
 ### Tankó Ádám
 - HTML
 - Python
-- Ötletgazda
 ### Szédelyi Ábris
 - HTML, CSS
 - Images, videos

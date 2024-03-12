@@ -43,6 +43,12 @@ def new_user():
         f.write(sor + '\n')
     autok.append(Felhasznalo(sor))
 
+
+    val = ''
+    while val not in map(str, range(3)):
+        val = input('Mit szeretne tenni? ')
+    return val
+
 def buy_new_car():
     rendszam = input('Rendszam: ')
     tipus = input('tipus: ')
@@ -60,6 +66,8 @@ def buy_new_car():
 
 def sell_car():
     eladando_auto_rendszam = input('Mi az auto rendszáma, amit szeretne eladni? ')
+def sell_car():
+    eladando_auto_rendszam= input('Mi az auto rendszáma, amit szeretne eladni? ')
     for i in autok:
         if i.rendszam == eladando_auto_rendszam:
             autok.remove(i)
