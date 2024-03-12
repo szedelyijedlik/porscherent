@@ -39,6 +39,7 @@ class Kiadott_Auto:
             raise Exception(f'Nincs {data[1]} nevű felhasználó')
         self.berlesi_ido = data[2]
         self.lejarati_ido = data[3]
+        self.visszahozasi_ido = data[4] if data[4] != 'None' else None
 
     def __str__(self) -> str:
         return self.auto.rendszam

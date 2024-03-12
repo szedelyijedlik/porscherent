@@ -16,21 +16,27 @@ with open('python/kiadott_autok.csv', 'r', encoding='utf-8') as f:
 
 def main():
     val = menu()
-    match val:
-        case '1':
-            buy_new_car()
-        case '2':
-            sell_car()
-        case '3': 
-            new_user()
-        case '4':
-            rent_car()
-        case '5':
-            list_all_cars()
-        case '6':
-            list_avaible_cars()
-        case '7': 
-            listing_kiberelt_cars()
+    while val != 0:
+        os.system('cls')
+        match val:
+            case '1':
+                buy_new_car()
+            case '2':
+                sell_car()
+            case '3': 
+                new_user()
+            case '4':
+                rent_car()
+            case '5':
+                list_all_cars()
+            case '6':
+                list_avaible_cars()
+            case '7': 
+                listing_kiberelt_cars()
+            case '8':
+                unrent_car()
+        os.system('cls')
+        val = menu()
 
 def menu():
     print('1...új kocsi vásárlása')
@@ -40,9 +46,10 @@ def menu():
     print('5...Összes Autó listázása')
     print('6...Bérelhető autók listázása')
     print('7...Kibérelt autók listázása')
+    print('8...Kibérelt autók visszavétele')
 
     val = ''
-    while val not in map(str, range(8)):
+    while val not in map(str, range(9)):
         val = input('Mit szeretne tenni? ')
     return val
 
@@ -55,36 +62,49 @@ def new_user():
         f.write(sor + '\n')
     autok.append(Felhasznalo(sor))
 
-
-def find_user(szoveg):
+def find_user(szoveg) -> Felhasznalo :
         while True:
             nev = input(szoveg)
             for i in felhasznalok:
                 if i.nev == nev:
                     return i
 
-
-def find_car(szoveg):
+def find_car(szoveg, mylist: list[Auto] = autok) -> Auto :
         while True:
             rendszam = input(szoveg)
-            for i in autok:
+            for i in mylist:
                 if i.rendszam == rendszam:
                     return i
         
 def rent_car():
     kiberlendo_auto: Auto = find_car('Melyik autót szeretnék kibérelni? (rendszám) ')
     for i in kiadott_autok:
-        if kiberlendo_auto.rendszam == i.auto.rendszam:
+        if kiberlendo_auto.rendszam == i.auto.rendszam and i.lejarati_ido is not None:
             input('Az autó már ki van adva. (ENTER)')
             return 
     kiberlo = find_user('Ki bérli az autót? ')
     lejarati_ido = ido_bekeres()
 
-    sor = ';'.join([kiberlendo_auto.rendszam, kiberlo.nev, time_now(), lejarati_ido])
+    sor = ';'.join([kiberlendo_auto.rendszam, kiberlo.nev, now_time(), lejarati_ido]) + ";NONE"
     with open('python/kiadott_autok.csv', 'a', encoding='utf-8') as f:
-        f.write(sor)
+        f.write(sor + '\n')
     kiadott_autok.append(Kiadott_Auto(sor, autok, felhasznalok))
     
+def unrent_car():
+    auto: Auto = find_car('Melyik autót hozták vissza? ', mylist=[i.auto for i in kiadott_autok if i.visszahozasi_ido is None])
+    for i in kiadott_autok:
+        if i.auto.rendszam == auto.rendszam:
+            i.visszahozasi_ido = now_time()
+            break
+    else:
+        print('Nincs benne')
+    with open('python/kiadott_autok.csv', 'w', encoding='utf-8') as f:
+        f.write('Rendszám;felhasznalo_neve;berlesi_ido;lejarati_ido;visszahozasi_ido\n')
+        for i in kiadott_autok:
+            # print(f'{i.auto.rendszam};{i.felhasznalo.nev};{i.berlesi_ido};{i.lejarati_ido};{str(i.visszahozasi_ido)}')
+            f.write(f'{i.auto.rendszam};{i.felhasznalo.nev};{i.berlesi_ido};{i.lejarati_ido};{str(i.visszahozasi_ido)}\n')
+    input('(ENTER)')
+
 def ido_bekeres(nagyobb = True):
     lejarati_ido = ' '
     while True:
@@ -106,7 +126,7 @@ def ido_bekeres(nagyobb = True):
                 pass
         if not nagyobb: 
             break
-        nowev, nowhonap,nownap = map(int, time_now().split('.'))
+        nowev, nowhonap,nownap = map(int, now_time().split('.'))
         if ev > nowev:
             break
         if ev < nowev: 
@@ -121,7 +141,7 @@ def ido_bekeres(nagyobb = True):
             break
     return lejarati_ido
 
-def time_now() -> str:
+def now_time() -> str:
     ido = time.localtime()
     return '.'.join(list(map(str, [ido.tm_year, ido.tm_mon, ido.tm_mday])))
 
@@ -160,6 +180,7 @@ def listing_kiberelt_cars():
         print(f'\tFelhasználó: {i.felhasznalo.nev}')
         print(f'\tKibérlés idő: {i.berlesi_ido}')
         print(f'\tLejárati idő: {i.lejarati_ido}')
+    input('(ENTER)')
 
 def list_avaible_cars():
     os.system('cls')
