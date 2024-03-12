@@ -9,12 +9,18 @@ class Auto:
         self.fogyasztas = int(data[5])
         self.ar = int(data[6])
 
+    def __str__(self) -> str:
+        return self.rendszam
+
 class Felhasznalo: 
     def __init__(self, sor: str) -> None:
         data = sor.strip().split(';')
         self.nev = data[0]
         self.telefonszam = data[1]
         self.nem = data[2] == 'F'
+
+    def __str__(self) -> str:
+        return self.nev
 
 class Kiadott_Auto:
     def __init__(self, sor: str, autok: list[Auto], felhasznalok: list[Felhasznalo]) -> None:
@@ -31,4 +37,8 @@ class Kiadott_Auto:
                 break
         else:
             raise Exception(f'Nincs {data[1]} nevű felhasználó')
-        self.lejarati_ido = data[2]
+        self.berlesi_ido = data[2]
+        self.lejarati_ido = data[3]
+
+    def __str__(self) -> str:
+        return self.auto.rendszam
