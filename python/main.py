@@ -1,64 +1,77 @@
-import os
-try:
-    f = open('python/slotar.csv', 'r', encoding='utf-8')
-    slavak = [sor.strip() for sor in f]
-except: 
-    f = open('python/slotar.csv', 'w', encoding='utf-8')
-    slavak = []
-f.close()
-
-def menu():
-    print('1...Keresni')
-    print('2...Új szót hozzáadni')
-    print('0...kilépni')
-    val = ''
-    while val not in ['1', '2', '0']:
-        val = input('Mit szeretne csinálni? ')
-    return val
+import os, sys
+from classes import Felhasznalo, Kiadott_Auto, Auto
+with open('python/autolista.csv', 'r', encoding='utf-8') as f:
+    f.readline()
+    autok: list[Auto] = [Auto(sor) for sor in f]
+with open('python/felhasznalok.csv', 'r', encoding='utf-8') as f:
+    f.readline()
+    felhasznalok: list[Felhasznalo] = [Felhasznalo(sor) for sor in f]
+with open('python/kiadott_autok.csv', 'r', encoding='utf-8') as f:
+    f.readline()
+    try: 
+        kiadott_autok: list[Kiadott_Auto] = [Kiadott_Auto(sor, autok, felhasznalok) for sor in f]
+    except Exception as a:
+        print(a)
+        sys.exit()
 
 def main():
     val = menu()
-    while val != '0':
-        os.system('cls')    
-        match val:
-            case '1':
-                kereses()
-            case '2':
-                hozzaadas()
-        os.system('cls')
-        val = menu()
+    match val:
+        case '1':
+            buy_new_car()
+        case '2':
+            sell_car()
+        case '3': 
+            new_user()
 
-def hozzaadas():
-    hozzaadando = input('Mit szeretne hozzáadni? ')
+def menu():
+    print('1...új kocsi vásárlása')
+    print('2...kocsi eladása')
+    print('3...felhasználó hozzáadása')
+
     val = ''
-    if hozzaadando in slavak: 
-        input('A szó már hozzá lett adva. (ENTER)')
-    if 'sl' not in hozzaadando:
-        while val != '1' and val != '0':
-            val = input('A szóban nincs sl. Biztos hozzá szeretné adni?(0/1) ')
-    if val == '0':
-        input('A  szót nem adtuk a listához. (ENTER)')
-    else: 
-        input('A szót sikeresen a listához adtuk. (ENTER)')
-        with open('slotar.csv', 'a', encoding='utf-8') as f:
-            f.write(hozzaadando + '\n')
-            slavak.append(hozzaadando)   
+    while val not in map(str, range(4)):
+        val = input('Mit szeretne tenni? ')
+    return val
 
-def kereses():
-    val = input('Mire szeretne keresni? ')
-    kiirt_szo_db = 1
-    szavak = [sor for sor in slavak if val in sor]
-    for i in szavak:
-        if kiirt_szo_db == 4 or i == szavak[-1]:
-            print(i)
-            kiirt_szo_db = 1
-            continue
-        else:
-            print(i, end=', ')
-            kiirt_szo_db += 1
+def new_user():
+    nev = input('Mi a neve? ')
+    telefonszam = input('Mi a telefonszáma? ')
+    nem = input('Mi a neme? (F/N) ')
+    sor = ';'.join([nev, telefonszam, nem])
+    with open('python/felhasznalok.csv', 'a', encoding='utf-8') as f:
+        f.write(sor + '\n')
+    autok.append(Felhasznalo(sor))
+
+def buy_new_car():
+    rendszam = input('Rendszam: ')
+    tipus = input('tipus: ')
+    futott_km = input('Hány km-t ment az autó: ')
+    uzemanyag = input('Mennyi üzemanyag van benne most? ')
+    uzemanyag_max = input('Mennyi az  üzemanyagtartály mérete? ')
+    fogyasztas = input('Mennyi a fogyasztás? ')
+    ar = input('Mennyi a napi ára? ')
+    sor = ';'.join([rendszam, tipus, futott_km, uzemanyag, uzemanyag_max, fogyasztas, ar])
+    with open('python/autolista.csv', 'a', encoding='utf-8') as f:
+        f.write(sor + '\n')
+    autok.append(Auto(sor))
 
 
-    input('ENTER')
+
+def sell_car():
+    eladando_auto_rendszam = input('Mi az auto rendszáma, amit szeretne eladni? ')
+    for i in autok:
+        if i.rendszam == eladando_auto_rendszam:
+            autok.remove(i)
+            break
+    else:
+        input('Nincs ilyen rendszámú autó\n(ENTER)')
+        return 
+    with open('python/autolista.csv', 'w', encoding='utf-8') as f:
+        f.write('Rendszám;Kocsi típusa;Futott km;uzemanyag;uzemanyagMax;fogyasztás;ár naponta\n')
+        for i in autok:
+            f.write(f'{i.rendszam};{i.tipus};{i.km};{i.uzemanyag};{i.uzemanyagMax};{i.fogyasztas};{i.ar}')
+    input('Az auto sikeren törölve lett\n(ENTER)')
 
 if __name__ == '__main__':
     main()
