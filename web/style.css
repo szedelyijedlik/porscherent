@@ -57,3 +57,25 @@ a.scrollToContinue svg {
     height: auto;
 
 }
+
+.welcomeSection {
+    background-position: 0 -10vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.welcomeCards {
+    margin-top: 30px;
+}
+
+.welcomeCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    background-size: cover;
+}
