@@ -35,6 +35,8 @@ def main():
                 listing_kiberelt_cars()
             case '8':
                 unrent_car()
+            case '9':
+                profit_calc()
         os.system('cls')
         val = menu()
 
@@ -172,6 +174,21 @@ def sell_car():
         for i in autok:
             f.write(f'{i.rendszam};{i.tipus};{i.km};{i.uzemanyag};{i.uzemanyagMax};{i.fogyasztas};{i.ar}\n')
     input('Az auto sikeren törölve lett\n(ENTER)')
+
+def profit_calc():
+    osszprofit: int = 0
+    for i in kiadott_autok:
+        if i.visszahozasi_ido is not None:
+            if i.visszahozasi_ido == i.lejarati_ido:
+                berlesi_ido = i.berlesi_ido.split('.')
+                visszahozasi_ido = i.visszahozasi_ido.split('.')
+                profit =( visszahozasi_ido[0] - berlesi_ido[0]*365 + visszahozasi_ido[1] - berlesi_ido[1]*30 + visszahozasi_ido[2] - berlesi_ido[2]) * i.auto.ar
+                osszprofit += profit
+                print(f'A kibérelt autó: {i.auto.rendszam}')
+                print(f'\tAz autó {i.berlesi_ido}-kor adták ki')
+                print(f'\tAz autót a megbeszélt időben visszahozták: {i.visszahozasi_ido}')
+                print(f'Ebből a profit: {profit} forint')
+                
 
 def listing_kiberelt_cars():
     os.system('cls')
