@@ -3,9 +3,11 @@ from classes import Felhasznalo, Kiadott_Auto, Auto
 with open('python/autolista.csv', 'r', encoding='utf-8') as f:
     f.readline()
     autok: list[Auto] = [Auto(sor) for sor in f]
+
 with open('python/felhasznalok.csv', 'r', encoding='utf-8') as f:
     f.readline()
     felhasznalok: list[Felhasznalo] = [Felhasznalo(sor) for sor in f]
+
 with open('python/kiadott_autok.csv', 'r', encoding='utf-8') as f:
     f.readline()
     try: 
@@ -37,6 +39,8 @@ def main():
                 unrent_car()
             case '9':
                 profit_calc()
+            case '10':
+                how_profit_calc()
         os.system('cls')
         val = menu()
 
@@ -49,9 +53,11 @@ def menu():
     print('6...Bérelhető autók listázása')
     print('7...Kibérelt autók listázása')
     print('8...Kibérelt autók visszavétele')
+    print('9...Profit kiszámítása')
+    print('10..Profit kiszámítás képlete')
 
     val = ''
-    while val not in map(str, range(9)):
+    while val not in map(str, range(11)):
         val = input('Mit szeretne tenni? ')
     return val
 
@@ -175,20 +181,60 @@ def sell_car():
             f.write(f'{i.rendszam};{i.tipus};{i.km};{i.uzemanyag};{i.uzemanyagMax};{i.fogyasztas};{i.ar}\n')
     input('Az auto sikeren törölve lett\n(ENTER)')
 
+def how_profit_calc():
+    print('Ha időben hozza vissza, akkor a napok száma * az autó bérlési ára')
+    print('Ha előbb hozza vissza, akkor az eltöltött napok száma * az autó bérlési ára + a maradék nap *az autó árának fele')
+    input('Ha később hozza vissza, akkor a lejárati napok száma * az autó bérlési ára + 14 nap az autó árána 1.5-szerese, ezen fellül 2-szerese\n(ENTER)')
+
 def profit_calc():
     osszprofit: int = 0
     for i in kiadott_autok:
         if i.visszahozasi_ido is not None:
+            print(i.visszahozasi_ido)
             if i.visszahozasi_ido == i.lejarati_ido:
-                berlesi_ido = i.berlesi_ido.split('.')
-                visszahozasi_ido = i.visszahozasi_ido.split('.')
-                profit =( visszahozasi_ido[0] - berlesi_ido[0]*365 + visszahozasi_ido[1] - berlesi_ido[1]*30 + visszahozasi_ido[2] - berlesi_ido[2]) * i.auto.ar
+                berlesi_ido = list(map(int, i.berlesi_ido.split('.')))
+                visszahozasi_ido = list(map(int, i.visszahozasi_ido.split('.')))
+                profit = ( (visszahozasi_ido[0] - berlesi_ido[0])*365 + (visszahozasi_ido[1] - berlesi_ido[1])*30 + visszahozasi_ido[2] - berlesi_ido[2]) * i.auto.ar
                 osszprofit += profit
                 print(f'A kibérelt autó: {i.auto.rendszam}')
                 print(f'\tAz autó {i.berlesi_ido}-kor adták ki')
                 print(f'\tAz autót a megbeszélt időben visszahozták: {i.visszahozasi_ido}')
-                print(f'Ebből a profit: {profit} forint')
-                
+                print(f'\tEbből a profit: {profit} forint')
+                continue
+            berlesi_ido = list(map(int, i.berlesi_ido.split('.')))
+            visszahozasi_ido = list(map(int, i.visszahozasi_ido.split('.')))
+            lejarati_ido = list(map(int, i.lejarati_ido.split('.')))
+            if kisebb_ido(visszahozasi_ido, lejarati_ido):
+                profit = ((visszahozasi_ido[0] - berlesi_ido[0])*365 + (visszahozasi_ido[1] - berlesi_ido[1])*30 + visszahozasi_ido[2] - berlesi_ido[2]) * i.auto.ar
+                profit += ((lejarati_ido[0] - visszahozasi_ido[0])*365 + (lejarati_ido[1] - visszahozasi_ido[1])*30 + lejarati_ido[2] - visszahozasi_ido[2]) * i.auto.ar/2
+                osszprofit += profit
+                print(f'A kibérelt autó: {i.auto.rendszam}')
+                print(f'\tAz autó {i.berlesi_ido}-kor adták ki')
+                print(f'\tAz autót a korábban hozták vissza: {i.visszahozasi_ido}')
+                print(f'\tAz autót a eddig bérelték ki: {i.lejarati_ido}')
+                print(f'\tEbből a profit: {profit:.0f} forint')
+                continue
+            profit = ((lejarati_ido[0] - berlesi_ido[0])*365 + (lejarati_ido[1] - berlesi_ido[1])*30 + lejarati_ido[2] - berlesi_ido[2]) * i.auto.ar
+            hatralevo_napok = (visszahozasi_ido[0] - lejarati_ido[0])*365 + (visszahozasi_ido[1] - lejarati_ido[1])*30 + visszahozasi_ido[2] - lejarati_ido[2]
+            print(profit)
+            profit += hatralevo_napok*i.auto.ar*1.5 if hatralevo_napok <= 14 else 21*i.auto.ar + (hatralevo_napok-14)*i.auto.ar*2
+            print(profit)
+            osszprofit += profit
+            print(f'A kibérelt autó: {i.auto.rendszam}')
+            print(f'\tAz autó {i.berlesi_ido}-kor adták ki')
+            print(f'\tAz autót a később hozták vissza: {i.visszahozasi_ido}')
+            print(f'\tAz autót a eddig bérelték ki: {i.lejarati_ido}')
+            print(f'\tEbből a profit: {profit:.0f} forint')
+    input(f'\nAz összes profit: {osszprofit:.0f}\n\n(ENTER)')
+
+def kisebb_ido(elso_ido: list[int], masodik_ido: list[int]) -> bool:
+    if elso_ido[0] < masodik_ido[0]: 
+        return True
+    if elso_ido[1] < masodik_ido[1]: 
+        return True
+    if elso_ido[2] < masodik_ido[2]: 
+        return True
+    return False
 
 def listing_kiberelt_cars():
     os.system('cls')
