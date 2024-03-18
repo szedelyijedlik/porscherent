@@ -45,20 +45,20 @@ def main():
         val = menu()
 
 def menu():
-    print('1...új kocsi vásárlása')
-    print('2...kocsi eladása')
-    print('3...felhasználó hozzáadása')
-    print('4...Autó bérlése')
-    print('5...Összes Autó listázása')
-    print('6...Bérelhető autók listázása')
-    print('7...Kibérelt autók listázása')
-    print('8...Kibérelt autók visszavétele')
-    print('9...Profit kiszámítása')
-    print('10..Profit kiszámítás képlete')
+    print('1.\tÚj kocsi vásárlása')
+    print('2.\tKocsi eladása')
+    print('3.\tFelhasználó hozzáadása')
+    print('4.\tAutó bérlése')
+    print('5.\tÖsszes Autó listázása')
+    print('6.\tBérelhető autók listázása')
+    print('7.\tKibérelt autók listázása')
+    print('8.\tKibérelt autók visszavétele')
+    print('9.\tProfit kiszámítása')
+    print('10.\tProfit kiszámítás képlete')
 
     val = ''
     while val not in map(str, range(11)):
-        val = input('Mit szeretne tenni? ')
+        val = input('\nVálasszon egy lehetőséget:  ')
     return val
 
 def new_user():
