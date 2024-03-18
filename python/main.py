@@ -69,6 +69,7 @@ def new_user():
     with open('python/felhasznalok.csv', 'a', encoding='utf-8') as f:
         f.write(sor + '\n')
     autok.append(Felhasznalo(sor))
+    input('Felhasználó sikeresen hozzáadva\n(ENTER)')
 
 def find_user(szoveg) -> Felhasznalo :
         while True:
@@ -93,11 +94,12 @@ def rent_car():
     kiberlo = find_user('Ki bérli az autót? ')
     lejarati_ido = ido_bekeres()
 
-    sor = ';'.join([kiberlendo_auto.rendszam, kiberlo.nev, now_time(), lejarati_ido]) + ";NONE"
+    sor = ';'.join([kiberlendo_auto.rendszam, kiberlo.nev, now_time(), lejarati_ido]) + ";None"
     with open('python/kiadott_autok.csv', 'a', encoding='utf-8') as f:
         f.write(sor + '\n')
     kiadott_autok.append(Kiadott_Auto(sor, autok, felhasznalok))
-    
+    input('Autó sikeresen ki lett bérelve.\n(ENTER)')
+
 def unrent_car():
     auto: Auto = find_car('Melyik autót hozták vissza? ', mylist=[i.auto for i in kiadott_autok if i.visszahozasi_ido is None])
     for i in kiadott_autok:
@@ -111,7 +113,7 @@ def unrent_car():
         for i in kiadott_autok:
             # print(f'{i.auto.rendszam};{i.felhasznalo.nev};{i.berlesi_ido};{i.lejarati_ido};{str(i.visszahozasi_ido)}')
             f.write(f'{i.auto.rendszam};{i.felhasznalo.nev};{i.berlesi_ido};{i.lejarati_ido};{str(i.visszahozasi_ido)}\n')
-    input('(ENTER)')
+    input('Autó visszavéve\n(ENTER)')
 
 def ido_bekeres(nagyobb = True):
     lejarati_ido = ' '
@@ -254,7 +256,7 @@ def list_avaible_cars():
             print(f'\tKm-t ment: {i.km} km')
             print(f'\tJelenlegi üzenemanyagmennyiség: {i.uzemanyag} l')
             print(f'\tÜzemanyagtartály mérete: {i.uzemanyagMax} l')
-            print(f'\tFogyasztás : {i.fogyasztas} ) l/km')
+            print(f'\tFogyasztás : {i.fogyasztas} l/km')
             print(f'\tÁr: {i.ar} ft/nap')
             print()
     input('ENTER')
