@@ -192,7 +192,6 @@ def profit_calc():
     osszprofit: int = 0
     for i in kiadott_autok:
         if i.visszahozasi_ido is not None:
-            print(i.visszahozasi_ido)
             if i.visszahozasi_ido == i.lejarati_ido:
                 berlesi_ido = list(map(int, i.berlesi_ido.split('.')))
                 visszahozasi_ido = list(map(int, i.visszahozasi_ido.split('.')))
@@ -202,6 +201,7 @@ def profit_calc():
                 print(f'\tAz autó {i.berlesi_ido}-kor adták ki')
                 print(f'\tAz autót a megbeszélt időben visszahozták: {i.visszahozasi_ido}')
                 print(f'\tEbből a profit: {profit} forint')
+                print()
                 continue
             berlesi_ido = list(map(int, i.berlesi_ido.split('.')))
             visszahozasi_ido = list(map(int, i.visszahozasi_ido.split('.')))
@@ -215,6 +215,7 @@ def profit_calc():
                 print(f'\tAz autót a korábban hozták vissza: {i.visszahozasi_ido}')
                 print(f'\tAz autót a eddig bérelték ki: {i.lejarati_ido}')
                 print(f'\tEbből a profit: {profit:.0f} forint')
+                print()
                 continue
             profit = ((lejarati_ido[0] - berlesi_ido[0])*365 + (lejarati_ido[1] - berlesi_ido[1])*30 + lejarati_ido[2] - berlesi_ido[2]) * i.auto.ar
             hatralevo_napok = (visszahozasi_ido[0] - lejarati_ido[0])*365 + (visszahozasi_ido[1] - lejarati_ido[1])*30 + visszahozasi_ido[2] - lejarati_ido[2]
@@ -227,6 +228,8 @@ def profit_calc():
             print(f'\tAz autót a később hozták vissza: {i.visszahozasi_ido}')
             print(f'\tAz autót a eddig bérelték ki: {i.lejarati_ido}')
             print(f'\tEbből a profit: {profit:.0f} forint')
+            print()
+        
     input(f'\nAz összes profit: {osszprofit:.0f}\n\n(ENTER)')
 
 def kisebb_ido(elso_ido: list[int], masodik_ido: list[int]) -> bool:
@@ -245,6 +248,7 @@ def listing_kiberelt_cars():
         print(f'\tFelhasználó: {i.felhasznalo.nev}')
         print(f'\tKibérlés idő: {i.berlesi_ido}')
         print(f'\tLejárati idő: {i.lejarati_ido}')
+        print()
     input('(ENTER)')
 
 def list_avaible_cars():
