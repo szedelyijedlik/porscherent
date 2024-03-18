@@ -4,9 +4,9 @@ class Auto:
         self.rendszam = data[0]
         self.tipus = data[1]
         self.km = int(data[2])
-        self.uzemanyag = int(data[3])
+        self.uzemanyag = float(data[3])
         self.uzemanyagMax = int(data[4])
-        self.fogyasztas = int(data[5])
+        self.fogyasztas = float(data[5])
         self.ar = int(data[6])
 
     def __str__(self) -> str:

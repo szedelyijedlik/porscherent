@@ -79,3 +79,14 @@ a.scrollToContinue svg {
     height: 500px;
     background-size: cover;
 }
+
+
+a.welcomeCardLink {
+    text-decoration: none;
+    color: white;
+}
+
+.welcomeCard h2 {
+    position: relative;
+    bottom: -190px;
+}
