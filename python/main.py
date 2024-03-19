@@ -68,13 +68,14 @@ def new_user():
     sor = ';'.join([nev, telefonszam, nem])
     with open('python/felhasznalok.csv', 'a', encoding='utf-8') as f:
         f.write(sor + '\n')
-    autok.append(Felhasznalo(sor))
+    felhasznalok.append(Felhasznalo(sor))
     input('Felhasználó sikeresen hozzáadva\n(ENTER)')
 
-def find_user(szoveg) -> Felhasznalo :
+def find_user(szoveg) -> Felhasznalo:
         while True:
             nev = input(szoveg)
             for i in felhasznalok:
+                print(i.nev)
                 if i.nev == nev:
                     return i
 
@@ -88,7 +89,7 @@ def find_car(szoveg, mylist: list[Auto] = autok) -> Auto :
 def rent_car():
     kiberlendo_auto: Auto = find_car('Melyik autót szeretnék kibérelni? (rendszám) ')
     for i in kiadott_autok:
-        if kiberlendo_auto.rendszam == i.auto.rendszam and i.lejarati_ido is not None:
+        if kiberlendo_auto.rendszam == i.auto.rendszam and i.lejarati_ido is None:
             input('Az autó már ki van adva. (ENTER)')
             return 
     kiberlo = find_user('Ki bérli az autót? ')
@@ -167,16 +168,17 @@ def buy_new_car():
     with open('python/autolista.csv', 'a', encoding='utf-8') as f:
         f.write(sor + '\n')
     autok.append(Auto(sor))
+    input('Autó sikeresen megvéva\n(ENTER)')
 
 def sell_car():
     eladando_auto: Auto = find_car('Mi az auto rendszáma, amit szeretne eladni? ')
-    for i in autok:
-        if i.rendszam == eladando_auto.rendszam:
-            autok.remove(i)
-            break
-    else:
-        input('Nincs ilyen rendszámú autó\n(ENTER)')
-        return 
+    for i in kiadott_autok:
+        if i.auto.rendszam == eladando_auto.rendszam:
+            if i.visszahozasi_ido is None:
+                input('Az autó még ki van adva, nem lehet eladni.\n(ENTER)')
+                return
+            else:
+                autok.remove(eladando_auto)
     with open('python/autolista.csv', 'w', encoding='utf-8') as f:
         f.write('Rendszám;Kocsi típusa;Futott km;uzemanyag;uzemanyagMax;fogyasztás;ár naponta\n')
         for i in autok:
