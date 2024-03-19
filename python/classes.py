@@ -30,7 +30,8 @@ class Kiadott_Auto:
                 self.auto = i
                 break
         else:
-            raise Exception(f'Nincs {data[0]} rendszámú autó')
+            if data[4] == 'None':
+                raise Exception(f'Nincs {data[0]} rendszámú autó', data[4])
         for i in felhasznalok:
             if i.nev == data[1]:
                 self.felhasznalo = i

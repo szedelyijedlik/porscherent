@@ -2,12 +2,3 @@
     width: 100px;
     height: 100px;
 }
-
-.card{
-    background-color: rgb(226, 226, 226);
-    box-shadow: 10px 10px rgb(216, 216, 216);
-}
-
-.cardl-header {
-    text-align: center;
-}
