@@ -120,3 +120,11 @@ p.disclosure {
     box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
     text-align: right;
 }
+/* footer */
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 4vh;
+}
