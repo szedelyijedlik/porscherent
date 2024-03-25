@@ -18,46 +18,44 @@ with open('python/kiadott_autok.csv', 'r', encoding='utf-8') as f:
 
 def main():
     val = menu()
-    while val != 0:
+    while val != '0':
         os.system('cls')
         match val:
             case '1':
                 buy_new_car()
-            case '2':
-                sell_car()
-            case '3': 
+            case '2': 
                 new_user()
-            case '4':
+            case '3':
                 rent_car()
-            case '5':
+            case '4':
                 list_all_cars()
-            case '6':
+            case '5':
                 list_avaible_cars()
-            case '7': 
+            case '6': 
                 listing_kiberelt_cars()
-            case '8':
+            case '7':
                 unrent_car()
-            case '9':
+            case '8':
                 profit_calc()
-            case '10':
+            case '9':
                 how_profit_calc()
         os.system('cls')
         val = menu()
 
 def menu():
     print('1.\tÚj kocsi vásárlása')
-    print('2.\tKocsi eladása')
-    print('3.\tFelhasználó hozzáadása')
-    print('4.\tAutó bérlése')
-    print('5.\tÖsszes Autó listázása')
-    print('6.\tBérelhető autók listázása')
-    print('7.\tKibérelt autók listázása')
-    print('8.\tKibérelt autók visszavétele')
-    print('9.\tProfit kiszámítása')
-    print('10.\tProfit kiszámítás képlete')
+    print('2.\tFelhasználó hozzáadása')
+    print('3.\tAutó bérlése')
+    print('4.\tÖsszes Autó listázása')
+    print('5.\tBérelhető autók listázása')
+    print('6.\tKibérelt autók listázása')
+    print('7.\tKibérelt autók visszavétele')
+    print('8.\tProfit kiszámítása')
+    print('9.\tProfit kiszámítás képlete')
+    print('0.\tKilépés')
 
     val = ''
-    while val not in map(str, range(11)):
+    while val not in map(str, range(10)):
         val = input('\nVálasszon egy lehetőséget:  ')
     return val
 
@@ -75,7 +73,6 @@ def find_user(szoveg) -> Felhasznalo:
         while True:
             nev = input(szoveg)
             for i in felhasznalok:
-                print(i.nev)
                 if i.nev == nev:
                     return i
 
@@ -170,21 +167,6 @@ def buy_new_car():
     autok.append(Auto(sor))
     input('Autó sikeresen megvéva\n(ENTER)')
 
-def sell_car():
-    eladando_auto: Auto = find_car('Mi az auto rendszáma, amit szeretne eladni? ')
-    for i in kiadott_autok:
-        if i.auto.rendszam == eladando_auto.rendszam:
-            if i.visszahozasi_ido is None:
-                input('Az autó még ki van adva, nem lehet eladni.\n(ENTER)')
-                return
-            else:
-                autok.remove(eladando_auto)
-    with open('python/autolista.csv', 'w', encoding='utf-8') as f:
-        f.write('Rendszám;Kocsi típusa;Futott km;uzemanyag;uzemanyagMax;fogyasztás;ár naponta\n')
-        for i in autok:
-            f.write(f'{i.rendszam};{i.tipus};{i.km};{i.uzemanyag};{i.uzemanyagMax};{i.fogyasztas};{i.ar}\n')
-    input('Az auto sikeren törölve lett\n(ENTER)')
-
 def how_profit_calc():
     print('Ha időben hozza vissza, akkor a napok száma * az autó bérlési ára')
     print('Ha előbb hozza vissza, akkor az eltöltött napok száma * az autó bérlési ára + a maradék nap *az autó árának fele')
@@ -262,7 +244,7 @@ def list_avaible_cars():
             print(f'\tKm-t ment: {i.km} km')
             print(f'\tJelenlegi üzenemanyagmennyiség: {i.uzemanyag} l')
             print(f'\tÜzemanyagtartály mérete: {i.uzemanyagMax} l')
-            print(f'\tFogyasztás : {i.fogyasztas} l/km')
+            print(f'\tFogyasztás : {i.fogyasztas} l/100 km')
             print(f'\tÁr: {i.ar} ft/nap')
             print()
     input('ENTER')
@@ -275,7 +257,7 @@ def list_all_cars():
         print(f'\tKm-t ment: {i.km} km')
         print(f'\tJelenlegi üzenemanyagmennyiség: {i.uzemanyag} l')
         print(f'\tÜzemanyagtartály mérete: {i.uzemanyagMax} l')
-        print(f'\tFogyasztás : {i.fogyasztas} ) l/km')
+        print(f'\tFogyasztás : {i.fogyasztas} l/100 km')
         print(f'\tÁr: {i.ar} ft/nap')
         print()
     input('ENTER')
