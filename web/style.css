@@ -128,3 +128,10 @@ p.disclosure {
     justify-content: center;
     min-height: 4vh;
 }
+
+/* TANKO */
+
+.card-kep{
+    width: 100px;
+    height: 100px;
+}
