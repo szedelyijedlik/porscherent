@@ -30,14 +30,16 @@ def main():
             case '4':
                 list_all_cars()
             case '5':
+                list_users()
+            case '6':
                 list_avaible_cars()
-            case '6': 
+            case '7': 
                 listing_kiberelt_cars()
-            case '7':
-                unrent_car()
             case '8':
-                profit_calc()
+                unrent_car()
             case '9':
+                profit_calc()
+            case '10':
                 how_profit_calc()
         os.system('cls')
         val = menu()
@@ -47,11 +49,12 @@ def menu():
     print('2.\tFelhasználó hozzáadása')
     print('3.\tAutó bérlése')
     print('4.\tÖsszes Autó listázása')
-    print('5.\tBérelhető autók listázása')
-    print('6.\tKibérelt autók listázása')
-    print('7.\tKibérelt autók visszavétele')
-    print('8.\tProfit kiszámítása')
-    print('9.\tProfit kiszámítás képlete')
+    print('5.\tFelhasználók listázása')
+    print('6.\tBérelhető autók listázása')
+    print('7.\tKibérelt autók listázása')
+    print('8.\tKibérelt autók visszavétele')
+    print('9.\tProfit kiszámítása')
+    print('10.\tProfit kiszámítás képlete')
     print('0.\tKilépés')
 
     val = ''
@@ -113,7 +116,7 @@ def unrent_car():
             f.write(f'{i.auto.rendszam};{i.felhasznalo.nev};{i.berlesi_ido};{i.lejarati_ido};{str(i.visszahozasi_ido)}\n')
     input('Autó visszavéve\n(ENTER)')
 
-def ido_bekeres(nagyobb = True):
+def ido_bekeres(nagyobb = True) -> str:
     lejarati_ido = ' '
     while True:
         while True:
@@ -203,9 +206,9 @@ def profit_calc():
                 continue
             profit = ((lejarati_ido[0] - berlesi_ido[0])*365 + (lejarati_ido[1] - berlesi_ido[1])*30 + lejarati_ido[2] - berlesi_ido[2]) * i.auto.ar
             hatralevo_napok = (visszahozasi_ido[0] - lejarati_ido[0])*365 + (visszahozasi_ido[1] - lejarati_ido[1])*30 + visszahozasi_ido[2] - lejarati_ido[2]
-            print(profit)
+            # print(profit)
             profit += hatralevo_napok*i.auto.ar*1.5 if hatralevo_napok <= 14 else 21*i.auto.ar + (hatralevo_napok-14)*i.auto.ar*2
-            print(profit)
+            # print(profit)
             osszprofit += profit
             print(f'A kibérelt autó: {i.auto.rendszam}')
             print(f'\tAz autó {i.berlesi_ido}-kor adták ki')
@@ -228,11 +231,12 @@ def kisebb_ido(elso_ido: list[int], masodik_ido: list[int]) -> bool:
 def listing_kiberelt_cars():
     os.system('cls')
     for i in kiadott_autok:
-        print(f'Rendszam: {i.auto.rendszam}')
-        print(f'\tFelhasználó: {i.felhasznalo.nev}')
-        print(f'\tKibérlés idő: {i.berlesi_ido}')
-        print(f'\tLejárati idő: {i.lejarati_ido}')
-        print()
+        if i.visszahozasi_ido is None:
+            print(f'Rendszam: {i.auto.rendszam}')
+            print(f'\tFelhasználó: {i.felhasznalo.nev}')
+            print(f'\tKibérlés idő: {i.berlesi_ido}')
+            print(f'\tLejárati idő: {i.lejarati_ido}')
+            print()
     input('(ENTER)')
 
 def list_avaible_cars():
@@ -259,6 +263,15 @@ def list_all_cars():
         print(f'\tÜzemanyagtartály mérete: {i.uzemanyagMax} l')
         print(f'\tFogyasztás : {i.fogyasztas} l/100 km')
         print(f'\tÁr: {i.ar} ft/nap')
+        print()
+    input('ENTER')
+
+def list_users():
+    os.system('cls')
+    for i in felhasznalok:
+        print(f'Neve: {i.nev}')
+        print(f'\ttelefonszáma: {i.telefonszam}')
+        print(f'\tneme: {"Férfi" if i.nem else "Nő"}')
         print()
     input('ENTER')
 
