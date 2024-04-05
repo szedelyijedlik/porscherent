@@ -14,7 +14,7 @@
 /* NAVBAR */
 
 .navbar {
-    background-color: rgba(0, 0, 0, 0.1);
+    transition: .5s;
 }
 
 .navbar-nav {
@@ -23,6 +23,10 @@
 
 .navbar-brand {
     font-size: 200%;
+}
+
+body {
+    background-color: rgba(225, 225, 225, 225, 0.9);
 }
 
 /* Kezdplap */
@@ -80,7 +84,6 @@ a.scrollToContinue svg {
     background-size: cover;
 }
 
-
 a.welcomeCardLink {
     text-decoration: none;
     color: white;
@@ -89,4 +92,46 @@ a.welcomeCardLink {
 .welcomeCard h2 {
     position: relative;
     bottom: -190px;
+}
+
+/* BÉRELHETŐ AUTÓK */
+
+.showroomImg img {
+    width: 100%;
+}
+
+.showroomWelcome {
+    text-align: center;
+}
+
+p.disclosure {
+    font-size: smaller;
+}
+
+.showroomCar {
+    color: black;
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.showroomCar:nth-of-type(odd) {
+    color: white;
+    background-color: rgba(44, 41, 41, 0.9);
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+    text-align: right;
+}
+/* footer */
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 4vh;
+}
+
+/* TANKO */
+
+.card-kep{
+    width: 100px;
+    height: 100px;
 }

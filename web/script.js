@@ -11,3 +11,13 @@ function scrollToContinue() {
     scrollDiv.style.opacity = 0.1;
     setTimeout(scrollToContinue, 2000);
   }
+
+window.addEventListener('scroll', function(event) {
+  const navigationBar = document.querySelector('.navbar');
+  
+  if (window.scrollY > 900) {
+    navigationBar.style.backgroundColor = "rgba(0, 0, 0, 0.9)"
+  } else {
+    navigationBar.style.backgroundColor = "rgba(0, 0, 0, 0)"
+    }
+  });
